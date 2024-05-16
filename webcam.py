@@ -9,16 +9,23 @@ class WebcamApp:
         self.window = window
         self.window.title(window_title)
 
+        # Set the background image
+        self.bg_image = Image.open("background.jpg")
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        self.bg_label = tk.Label(window, image=self.bg_photo)
+        self.bg_label.place(relwidth=1, relheight=1)
+
         # Title label
-        self.title_label = ttk.Label(window, text="ExamAuthApp", font=("Helvetica", 20, "bold"))
-        self.title_label.pack()
+        self.title_label = ttk.Label(window, text="ExamAuthApp", font=("Helvetica", 28, "bold"),  foreground='Black')
+        self.title_label.pack(pady=10)
 
         self.video_source = 0
         self.vid = cv2.VideoCapture(self.video_source)
 
-        self.frame_width = int(self.vid.get(cv2.CAP_PROP_FRAME_WIDTH))
-        self.frame_height = int(self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        self.canvas = tk.Canvas(window, width=self.frame_width, height=self.frame_height)
+        # Set desired width and height for the video frame
+        self.frame_width = 320  # Set desired width
+        self.frame_height = 240  # Set desired height
+        self.canvas = tk.Canvas(window, width=self.frame_width, height=self.frame_height, background='pink')
         self.canvas.pack()
 
         self.db_path = db_path
@@ -26,13 +33,11 @@ class WebcamApp:
         self.btn_capture = ttk.Button(window, text="Capture", command=self.capture)
         self.btn_capture.pack(pady=10)
 
-        self.match_label = ttk.Label(window, text="", font=("Helvetica", 14))
-        self.match_label.pack()
+        self.match_label = ttk.Label(window, text="", font=("Helvetica", 20),  foreground='Black')
+        self.match_label.pack(pady=10)
 
         self.delay = 10
         self.update()
-
-
 
     def capture(self):
         ret, frame = self.vid.read()
@@ -43,6 +48,7 @@ class WebcamApp:
     def update(self):
         ret, frame = self.vid.read()
         if ret:
+            frame = cv2.resize(frame, (self.frame_width, self.frame_height))  # Resize the frame to the desired dimensions
             # Detect faces in the frame
             faces = self.detect_faces(frame)
             if faces is not None:
