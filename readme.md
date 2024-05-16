@@ -12,14 +12,10 @@ This is a simple Python application for exam authentication using webcam and fac
    git clone https://github.com/Yosri-zayani/ExamAuthApp
    ```
 
-3. Navigate to the project directory:
-   ```
-   cd exam-authentication-app
-   ```
 
-4. Install the required Python libraries using pip:
+3. Install the required Python libraries using pip:
    ```
-   pip install -r requirements.txt
+   pip install  tkinter opencv-python deepface
    ```
 
 ## Launching the Application
